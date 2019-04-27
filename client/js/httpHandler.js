@@ -2,29 +2,14 @@
 
   const serverUrl = 'http://127.0.0.1:3000';
 
-  //
-  // TODO: build the swim command fetcher here
-  const getRandCommand = () => {
-    $.ajax({
-      type:'GET',
-      data: 'foo',
-      url: serverUrl,
-      //cache, content, processData
-      success: (response) =>{
-        SwimTeam.move(response.command)
-      }
-    }) 
+  var getDirection = () => {
+    $.get(serverUrl + '/move', (direction) =>{
+      SwimTeam.move(direction)
+      setTimeout(getDirection, 200)
+    })
   }
-  // server.mock(?, 'GET')
+  getDirection()
 
-  // if(req.method === 'GET){
-  // Math.floor(Math.random() * 5)
-  // let randCommand = get random command from number
-  // res.end(randCommand)
-  //}
-  // res._data === randCommand
-  // if(req.method === 'POST')
-  // do shit
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -37,8 +22,9 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: serverUrl,
-      cache: false,
+
+      url: serverUrl + '/background.jpg',
+            cache: false,
       contentType: false,
       processData: false,
       success: () => {

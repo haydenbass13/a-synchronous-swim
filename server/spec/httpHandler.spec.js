@@ -31,7 +31,7 @@ describe('server responses', () => {
     expect(res._responseCode).to.equal(200)
     expect(res._ended).to.equal(true)
     expect(res._data.toString()).to.be.a('string')
-    console.log(res._data.toString())
+    console.log(res._data)
     expect(validOutput.includes(res._data.toString())).to.equal(true)
 
     done();

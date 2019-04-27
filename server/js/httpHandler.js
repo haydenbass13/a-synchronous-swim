@@ -2,70 +2,33 @@ const fs = require('fs');
 const path = require('path');
 const headers = require('./cors');
 const multipart = require('./multipartUtils');
+const queue = require('./messageQueue.js');
 
 // Path for the background image ///////////////////////
 module.exports.backgroundImageFile = path.join('.', 'background.jpg');
 ////////////////////////////////////////////////////////
 var validMessages = ['up', 'left', 'down', 'right']
 
-module.exports.router = (req, res, next = ()=>{}) => {
-  console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  res.writeHead(200, headers);
-  // const {method, url} = req
-
-  req.on('error', (err) => {
-    console.error(err)
-  }).on('end', () => {
-    
-    res.on('error', (err) => {
-      console.log(err)
-    })
-    res.writeHead(200, headers);
-  })
-  if(req.method === 'GET'){
-    let randCommand = validMessages[Math.floor(Math.random() * 3)]
-    res.write(randCommand)
-  }
-  res.end();
+let messageQueue = null;
+module.exports.initialize = (queue) => {
+  messageQueue = queue;
 };
 
-  // server.mock(?, 'GET')?
+module.exports.router = (req, res, next = ()=>{}) => {
 
-  // if(req.method === 'GET){
-  // Math.floor(Math.random() * 5)
-  // let randCommand = get random command from number
-  // res.end(randCommand)
-  //}
-  // res._data === randCommand
-  // if(req.method === 'POST')
-  // do shit
-// http.createServer((request, response) => {
-//   const { headers, method, url } = request;
-//   let body = [];
-//   request.on('error', (err) => {
-//     console.error(err);
-//   }).on('data', (chunk) => {
-//     body.push(chunk);
-//   }).on('end', () => {
-//     body = Buffer.concat(body).toString();
-//     // BEGINNING OF NEW STUFF
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, headers);
+    res.end()
+  } 
+  else if (req.method === 'GET') {
+    if (req.url === '/move') {
+      res.writeHead(200, headers)
+      res.end(queue.dequeue() || '')
+    }
+  } 
+  else if (req.method === 'POST') {
+    
+  }
+  
+};
 
-//     response.on('error', (err) => {
-//       console.error(err);
-//     });
-
-//     response.statusCode = 200;
-//     response.setHeader('Content-Type', 'application/json');
-//     // Note: the 2 lines above could be replaced with this next one:
-//     // response.writeHead(200, {'Content-Type': 'application/json'})
-
-//     const responseBody = { headers, method, url, body };
-
-//     response.write(JSON.stringify(responseBody));
-//     response.end();
-//     // Note: the 2 lines above could be replaced with this next one:
-//     // response.end(JSON.stringify(responseBody))
-
-//     // END OF NEW STUFF
-//   });
-// }).listen(8080);
