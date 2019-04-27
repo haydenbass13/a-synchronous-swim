@@ -51,6 +51,8 @@ var response = function() {
       this._data = Buffer.concat([this._data, Buffer.from(data)]);
     }
   };
+
+  //return this
 };
 
 module.exports = {
@@ -61,3 +63,5 @@ module.exports = {
     };
   }
 };
+
+// res.write(randCommand)

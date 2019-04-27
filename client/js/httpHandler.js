@@ -4,7 +4,27 @@
 
   //
   // TODO: build the swim command fetcher here
-  //
+  const getRandCommand = () => {
+    $.ajax({
+      type:'GET',
+      data: 'foo',
+      url: serverUrl,
+      //cache, content, processData
+      success: (response) =>{
+        SwimTeam.move(response.command)
+      }
+    }) 
+  }
+  // server.mock(?, 'GET')
+
+  // if(req.method === 'GET){
+  // Math.floor(Math.random() * 5)
+  // let randCommand = get random command from number
+  // res.end(randCommand)
+  //}
+  // res._data === randCommand
+  // if(req.method === 'POST')
+  // do shit
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -17,7 +37,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverUrl,
       cache: false,
       contentType: false,
       processData: false,
