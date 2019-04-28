@@ -48,7 +48,7 @@
       console.log('Not a jpg file!');
       return;
     }
-
+    console.log('hit me')
     ajaxFileUplaod(file);
   });
 
